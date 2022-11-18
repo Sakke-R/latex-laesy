@@ -13,7 +13,7 @@ def browseClick():
         for i in file:
             songList.insert(END, os.path.basename(i.name).replace(".tex", ""))
 
-def clearClick():
+def clearClick():<
     songList.insert(END, "Clear Page")
 
 def emptyClick():
