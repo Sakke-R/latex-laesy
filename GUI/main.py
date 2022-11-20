@@ -13,20 +13,45 @@ def browseClick():
         for i in file:
             songList.insert(END, os.path.basename(i.name).replace(".tex", ""))
 
-def clearClick():<
+def clearClick():
     songList.insert(END, "Clear Page")
 
 def emptyClick():
     songList.insert(END, "Empty Page")
 
 def upClick():
-    print("")
+    sel = songList.curselection()
+    if not sel:
+        return
+    if sel[0] == 0:
+        return
+    seltext = songList.get(sel[0])
+    songList.delete(sel[0])
+    songList.insert(sel[0]-1, seltext)
+    songList.select_set(sel[0]-1)
 
 def downClick():
-    print("")
+    sel = songList.curselection()
+    if not sel:
+        return
+    if sel[0] == len(songList.get(0,END))-1:
+        return
+    seltext = songList.get(sel[0])
+    songList.delete(sel[0])
+    songList.insert(sel[0]+1, seltext)
+    songList.select_set(sel[0]+1)
 
 def deleteClick():
+    sel = songList.curselection()
+    if not sel:
+        return
     songList.delete(songList.curselection())
+    if sel[0] == 0:
+        songList.select_set(0)
+    if sel[0] == len(songList.get(0,END))-1:
+        songList.select_set(sel[0] - 1)
+    else: songList.select_set(sel[0])
+
 
 selectLabel = Label(latexlassy, text="Select songs:").place(x=60,y=10)
 browseButton = Button(latexlassy, text="Browse...", command=browseClick).place(x=60,y=35)
