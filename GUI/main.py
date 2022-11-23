@@ -101,8 +101,6 @@ def nextClick():
 
 def generateClick():
     global previewPage
-    global pages
-    global canvas
     global new_image
     previewPage = 1
     pageLabel.config(text=f"Current page: {previewPage}")
