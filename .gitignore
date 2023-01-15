@@ -1,0 +1,12 @@
+venv
+tmp
+projects/song_selector/songs.*
+*.pdf
+projects/*.pdf
+**/__pycache__/
+bin
+library/latex-libraries/
+library/latex-libraries.zip
+
+
+
