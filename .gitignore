@@ -5,7 +5,9 @@ projects/song_selector/songs.*
 projects/*.pdf
 **/__pycache__/
 bin
-library/latex-libraries/
+library/latex-libraries/*
+!library/latex-libraries/tlpkg
+!library/latex-libraries/web2c
 library/latex-libraries.zip
 
 
