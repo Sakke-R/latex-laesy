@@ -1,5 +1,9 @@
 import os
+import time
 from subprocess import Popen
+
+import pylatex
+
 
 class Bookletizer:
     def __init__(self):
@@ -23,15 +27,33 @@ class Bookletizer:
         self.international_songs = self.formDictionary(int_songs)
         self.all_songs = self.formDictionary(fin_songs + int_songs)
 
-    def generateTexFile(self, song_list):
-        file = open("projects/song_selector/songs.tex", 'w')
-        for song in song_list:
-            tex_file = self.all_songs[song]
-            line = "\\input{laulut/" + tex_file + "}\n"
-            file.write(line)
+    def generateTexFile(self, widget_list):
+        with open("projects/song_selector/a4_half.tex", 'r') as f:
+            contents = f.readlines()
         
+        for i, widget_name in enumerate(widget_list):
+            line = ""
+            if "Vert space" in widget_name:
+                line += "\\vspace{}".format(widget_name.split(':')[1]) + "}\n"
+            elif "Page break" == widget_name:
+                line += "\\pagebreak"
+            else:
+                line += "\\input{laulut/" + self.all_songs[widget_name] + "}\n"
+            contents.insert(63 + i, line)
+
+        with open("projects/song_selector/a4_half_generated.tex", 'w') as f:
+            f.writelines(contents)
+        
+        #os.environ["TEXMFHOME"] = "library/latex-libraries"
+        #doc = pylatex.Document(document_options=["projects/song_selector/a4_half.tex"])
+        #doc.generate_pdf("a4_half_2", compiler="bin/texlive/2022/bin/x86_64-linux/pdflatex")
+        
+
         DEVNULL = open(os.devnull, 'wb')
-        process = Popen(["./run.sh", ""], stdout=DEVNULL, stderr=DEVNULL)
+        process = Popen(["./run.sh"])
+        process.wait(5)
+
+        return process.returncode
         
     
     def isMatch(self, title_string):

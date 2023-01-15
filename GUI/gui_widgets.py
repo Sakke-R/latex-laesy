@@ -2,11 +2,13 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 
     
 class PdfViewer(QtWidgets.QLabel):
-    def __init__(self, parent, img):
+    def __init__(self, parent, img, dual=True):
         super(PdfViewer, self).__init__()
         self.page_view = 0
-        self.pages = 1
+        self.pages = 4
         self.gui = parent
+        self.dual = dual
+
         self.setFrameStyle(QtWidgets.QFrame.Shape.StyledPanel)
         self.pixmap = QtGui.QPixmap(img)
 
@@ -50,7 +52,7 @@ class SearchBar(QtWidgets.QLineEdit):
     def keyPressEvent(self, a0: QtGui.QKeyEvent) -> None:
         if a0.key() == QtCore.Qt.Key.Key_Return:
             if(self.song_selector.isMatch(self.displayText())):
-                self.gui.add_song_title(self.displayText())
+                self.gui.addSong(self.displayText())
                 self.setText("")
         elif a0.key() == QtCore.Qt.Key.Key_Left:
             self.gui.pdf_viewer.shiftViewLeft()
@@ -77,8 +79,63 @@ class SongSelection(QtWidgets.QListWidget):
             item = self.takeItem(row)
             self.insertItem(row + 1, item)
             self.setCurrentRow(row)
+        elif e.key() == QtCore.Qt.Key.Key_Return:
+            self.addPageBreak()
+        elif e.key() == QtCore.Qt.Key.Key_Plus:
+            self.addVspace(0.15)
+        elif e.key() == QtCore.Qt.Key.Key_Minus:
+            self.addVspace(-0.15)
 
         return super().keyPressEvent(e)
 
-    def getSongTitles(self):
+    def addSong(self, title):
+        if title not in self.getWidgetNames():
+            self.insertItem(self.currentRow() + 1, QtWidgets.QListWidgetItem(title))
+            self.setCurrentRow(self.currentRow() + 1)
+            return True
+        return False
+
+    def getWidgetNames(self):
         return [self.item(x).text() for x in range(self.count())]
+
+    def addVspace(self, amount):
+
+        def handleRow(row):
+            row_item = self.takeItem(row)
+            if isinstance(row_item, VspaceWidget):
+                new_vspace = row_item + amount
+                if new_vspace: # Not none
+                    self.insertItem(row, new_vspace)
+                self.setCurrentRow(row)
+                return True
+            self.insertItem(row, row_item)
+            return False
+
+        row = self.currentRow()
+        if(row < 1):
+            return False
+
+        # Add to selected vspacewidget or one above current song title
+        if handleRow(row) or handleRow(row - 1):
+            return True
+
+        # If there isn't a vspacewidget already then create one
+        self.insertItem(row, VspaceWidget(amount))
+        self.setCurrentRow(row)
+        return True
+
+    def addPageBreak(self):
+        self.insertItem(self.currentRow(), QtWidgets.QListWidgetItem("Page break"))
+
+
+class VspaceWidget(QtWidgets.QListWidgetItem):
+
+    def __init__(self, amount: float):
+        super().__init__("Vert space: {}".format(amount))
+        self.value = amount
+    
+    def __add__(self, amount: float):
+        self.value += amount
+        if self.value == 0:
+            return None
+        return VspaceWidget(round(self.value, 2))

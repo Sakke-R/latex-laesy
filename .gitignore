@@ -1,6 +1,6 @@
 venv
 tmp
-projects/song_selector/songs.*
+projects/song_selector/a4_half_generated.tex
 *.pdf
 projects/*.pdf
 **/__pycache__/

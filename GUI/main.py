@@ -5,7 +5,7 @@ import sys, os
 
 from PyQt5.QtWidgets import QApplication
 from gui import GUI
-from song_selector import Bookletizer
+from bookletizer import Bookletizer
 
 
 def main():
@@ -17,8 +17,11 @@ def main():
 
     gui = GUI(booklet_format, song_selector)
 
+    exit_code = app.exec_()
+    for img in os.listdir("GUI/a4_half"):
+       os.remove("GUI/a4_half/{}".format(img))
 
-    sys.exit(app.exec_())
+    sys.exit(exit_code)
 
 
 if __name__ == "__main__":
