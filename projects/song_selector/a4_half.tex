@@ -7,6 +7,7 @@
 % \ A4 vertical split  /
 \usepackage[papersize={10.5cm, 29.7cm}]{geometry}
 
+\usepackage{docmute}
 
 \usepackage{titlesec}
 \usepackage{graphicx}
@@ -53,7 +54,6 @@
 \vspace{2.5cm}
 \end{center}
 
-\pagebreak
 \pagenumbering{Roman}
 % Cover page
 
@@ -62,30 +62,9 @@
 
 \begin{flushleft}
 
-\input{../laulut/hyvät-ystävät}        %
-\input{../laulut/sahtilaulu}           %
-\input{../laulut/se-kolmas-vesilaulu}  %
-\input{../laulut/yli-koskien}          %
-\input{../laulut/viinin-kaipuu}        %
-\input{../laulut/kaks-kisälliä}        %
-\input{../laulut/helan-går}            %
-\input{../laulut/hei-vahtimestari}     %
-\input{../laulut/takki-pois}           %
+\include{projects/song_selector/songs.tex}
 
-\clearpage
-\input{../laulut/international/my-favourite-drinks} %
-\input{../laulut/vesikansan-marssi}    %
-\vspace{-0.3cm}
-\input{../laulut/as-phuksin-laulu}     %
-\input{../laulut/nostakaamme-malja}
-\input{../laulut/mellan-sup}           %
-\input{../laulut/stimulaulu}           %
-\input{../laulut/pikku-paviljonki}     %
-\vspace{0.5cm}
-\input{../laulut/nisti-ja-nööri}       %
-\newpage
-\input{../laulut/jallutähden-alla}     %
-\input{../laulut/kenompi-phuksi}       %
+\input{laulut/kenompi-phuksi}       %
 
 
 \vfill
@@ -96,7 +75,7 @@
 
 \pagenumbering{gobble}
 \begin{center}
-\input{../laulut/ikuisen-teekkarin-laulu}
+\input{laulut/ikuisen-teekkarin-laulu}
 
 \newpage
 
@@ -106,7 +85,7 @@
 
 Mikäli koet tapahtumassa häirintää ja haluat ilmoittaa siitä, voit tehdä niin ottamalla suoraan yhteyttä AS:n häirintäyhdyshenkilöön tai täyttämällä lomakkeen. \\Löydät häirintäyhdyshenkilöiden yhteystiedot ja lomakkeen skannaamalla tämän QR-koodin. Ilmoituksen voi tehdä myös anonyymisti.
 
-\includegraphics[scale=0.17]{../kuvat/hairinta_qr.PNG}
+\includegraphics[scale=0.17]{kuvat/hairinta_qr.PNG}
 
 If you experience any harassment during this event and would like to report it, you can do so by contacting AS' Confidential Counselors or by filling out a form. You'll find the contact information for the Counselors and the form by scanning the QR code. You can also make a report anonymously.
 
