@@ -1,14 +1,14 @@
-# texlive.profile written on Sun Jan 15 15:49:05 2023 UTC
+# texlive.profile written on Mon Jan 16 08:58:11 2023 UTC
 # It will NOT be updated and reflects only the
 # installation profile at installation time.
 selected_scheme scheme-small
-TEXDIR bin/texlive/2022
-TEXMFCONFIG ~/.texlive2022/texmf-config
-TEXMFHOME ~/texmf
-TEXMFLOCAL bin/texlive/texmf-local
-TEXMFSYSCONFIG bin/texlive/2022/texmf-config
-TEXMFSYSVAR bin/texlive/2022/texmf-var
-TEXMFVAR ~/.texlive2022/texmf-var
+TEXDIR {ROOT_DIR}/bin/texlive/2022
+TEXMFCONFIG {ROOT_DIR}/.texlive2022/texmf-config
+TEXMFHOME {ROOT_DIR}/library/latex-libraries
+TEXMFLOCAL {ROOT_DIR}/bin/texlive/texmf-local
+TEXMFSYSCONFIG {ROOT_DIR}/bin/texlive/2022/texmf-config
+TEXMFSYSVAR {ROOT_DIR}/bin/texlive/2022/texmf-var
+TEXMFVAR {ROOT_DIR}/.texlive2022/texmf-var
 binary_x86_64-linux 1
 instopt_adjustpath 0
 instopt_adjustrepo 1

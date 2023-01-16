@@ -3,12 +3,10 @@ tmp
 projects/song_selector/a4_half_generated.tex
 *.pdf
 projects/*.pdf
-**/__pycache__/
+**/__pycache__
 bin
 library/latex-libraries/*
-!library/latex-libraries/tlpkg
-!library/latex-libraries/web2c
 library/latex-libraries.zip
-
-
+.texlive2022
+texlive.profile
 

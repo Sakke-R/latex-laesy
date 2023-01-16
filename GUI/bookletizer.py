@@ -2,9 +2,6 @@ import os
 import time
 from subprocess import Popen
 
-import pylatex
-
-
 class Bookletizer:
     def __init__(self):
         self.path = os.getcwd() + '/laulut'
@@ -34,7 +31,7 @@ class Bookletizer:
         for i, widget_name in enumerate(widget_list):
             line = ""
             if "Vert space" in widget_name:
-                line += "\\vspace{}".format(widget_name.split(':')[1]) + "}\n"
+                line += f"\\vspace{{ {widget_name.split(':')[1]} cm }}\n"
             elif "Page break" == widget_name:
                 line += "\\pagebreak"
             else:

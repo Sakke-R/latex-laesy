@@ -100,6 +100,7 @@ class GUI(QtWidgets.QMainWindow):
             images = new_images
 
         self.pdf_viewer.updatePageNum(len(images))
+
         for i, img in enumerate(images):
             img.save("GUI/a4_half/{}.png".format(i), 'PNG')
         self.update_pdf_viewer(self.pdf_viewer.page_view)

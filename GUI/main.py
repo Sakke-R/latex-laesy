@@ -10,6 +10,8 @@ from bookletizer import Bookletizer
 
 def main():
     booklet_format = None
+    if(not os.path.exists("GUI/a4_half")):
+        os.mkdir("GUI/a4_half")
 
     global app
     app = QApplication(sys.argv)
