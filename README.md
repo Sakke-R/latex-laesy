@@ -14,7 +14,7 @@ pdflatex song_selector/a4_half.tex && pdflatex bookletization/booklet_a4_pysty.t
 - Unpack texlive:
 	zcat library/install-tl-unx.tar.gz | tar xf - -C tmp/
 - Seed root directory to texlive.profile:
-	ROOT_DIR=$(pwd) perl -pe 's/{(.*?)}/$ENV{ROOT_DIR}/g' .default_texlive.profile > texlive.profile
+	ROOT_DIR=$(pwd) perl -pe 's/{(.*?)}/$ENV{ROOT_DIR}/g' library/default_texlive.profile > texlive.profile
 
 - Run installation with profile:
 	perl tmp/install-tl-20230115/install-tl -profile texlive.profile
