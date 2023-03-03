@@ -9,7 +9,7 @@ from bookletizer import Bookletizer
 
 
 def main():
-    booklet_format = None
+    booklet_format = "vert_a4_split"
     if(not os.path.exists("GUI/a4_half")):
         os.mkdir("GUI/a4_half")
 

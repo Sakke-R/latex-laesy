@@ -1,5 +1,6 @@
 import numpy as np
 import threading
+import os
 
 from PyQt5 import QtWidgets, QtGui, QtCore
 from pdf2image import convert_from_path
@@ -22,10 +23,13 @@ class GUI(QtWidgets.QMainWindow):
 
         self.init_window()
         self.init_pdf_viewer()
-        #self.init_buttons()
-        #self.init_sliders()
+        self.selected_songs.addSong("Kenompi Phuksi")
         self.selected_songs.addSong("Askiin")
-        print(self.selected_songs.getWidgetNames())
+
+        self.selected_songs.addPageBreak()
+        self.selected_songs.addSong("Ikuisen Teekkarin Laulu", True)
+
+        print(self.selected_songs.getWidgets())
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.pdf_viewer.repaint)
@@ -49,20 +53,21 @@ class GUI(QtWidgets.QMainWindow):
         left_vertical = QtWidgets.QVBoxLayout()
         
         # Add widgets for displaying search bar, selected songs and output page
-        
-        self.search_bar = SearchBar(self, self.bookletizer)
-        self.search_bar.setGeometry(0, 0, int(width/2), int(height/20))
+        self.selected_songs = SongSelection(self)
 
+        
         # Create and add a completer for the search bar
-        self.completer = QtWidgets.QCompleter(self.bookletizer.getAllSongTitles(), self)
-        self.completer.setCaseSensitivity(0)
-        self.completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
-        self.search_bar.setCompleter(self.completer)
+        completer = QtWidgets.QCompleter(self.bookletizer.getAllTitles(), self)
+        completer.setCaseSensitivity(0)
+        completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
+        
+        self.search_bar = SearchBar(self, self.selected_songs, self.bookletizer, completer)
+        self.search_bar.setGeometry(0, 0, int(width/2), int(height/20))
         
         # Finally add the search bar to the vertical layout
         left_vertical.addWidget(self.search_bar, 10)
 
-        self.selected_songs = SongSelection(self)
+
         self.selected_songs.setGeometry(0, int(height/20), int(width/2), height - int(height/20))
         #self.selected_songs.setSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Minimum)
         left_vertical.addWidget(self.selected_songs, 85)
@@ -84,11 +89,14 @@ class GUI(QtWidgets.QMainWindow):
         self.pdf_viewer.show()
 
     def update_pdf_viewer(self, page):
-        self.pdf_viewer.changePixmap("GUI/a4_half/{}.png".format(page))
+        if os.path.exists("GUI/a4_half/{}.png".format(page)):
+            self.pdf_viewer.changePixmap("GUI/a4_half/{}.png".format(page))
+        else:
+            self.generateNewView(page)
 
-    def generateNewView(self):
-        self.bookletizer.generateTexFile(self.selected_songs.getWidgetNames())
-        images = convert_from_path("a4_half_generated.pdf", thread_count=4, fmt="png")
+    def generateNewView(self, first_pg = None):
+        self.bookletizer.generateTexFile(self.selected_songs.getWidgets())
+        images = convert_from_path("a4_half_generated.pdf", thread_count=4, fmt="png", first_page = first_pg)
         if self.pdf_viewer.dual:
             print(len(images))
             
@@ -110,8 +118,12 @@ class GUI(QtWidgets.QMainWindow):
         thread.start()
         thread.join()
 
-    def addSong(self, title):
-        self.selected_songs.addSong(title)
+    def addSong(self, title, center = False):
+        self.selected_songs.addSong(title, center)
+        self.selected_songs.setFocus()
+
+    def addImg(self, title):
+        self.selected_songs.addImg(title)
         self.selected_songs.setFocus()
 
     def keyPressEvent(self, a0: QtGui.QKeyEvent) -> None:
@@ -123,4 +135,6 @@ class GUI(QtWidgets.QMainWindow):
         elif a0.key() == QtCore.Qt.Key.Key_Left:
             print("Left")
             self.pdf_viewer.shiftViewLeft()
-        return super().keyPressEvent(a0)
+        else:
+            return super().keyPressEvent(a0)
+        return None
