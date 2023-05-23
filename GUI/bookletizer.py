@@ -33,8 +33,6 @@ class Bookletizer:
         self.images = (os.listdir(self.img_path))
 
         #self.images = dict({file_name, Image.open(self.img_path+'/'+file_name).size} for file_name in images)
-        print("Initialization done. Self.images: ")
-        print(self.images)
 
     def generateTexFile(self, widget_list):
         with open("projects/song_selector/a4_half.tex", 'r') as f:

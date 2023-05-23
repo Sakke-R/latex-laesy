@@ -33,6 +33,7 @@ class GUI(QtWidgets.QMainWindow):
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.pdf_viewer.repaint)
+        self.timer.timeout.connect(self.bookletizer.initializeLibrary)
         self.timer.start(10)
 
     def init_window(self):
@@ -55,7 +56,7 @@ class GUI(QtWidgets.QMainWindow):
         # Add widgets for displaying search bar, selected songs and output page
         self.selected_songs = SongSelection(self)
 
-        
+    
         # Create and add a completer for the search bar
         completer = QtWidgets.QCompleter(self.bookletizer.getAllTitles(), self)
         completer.setCaseSensitivity(0)
@@ -111,7 +112,10 @@ class GUI(QtWidgets.QMainWindow):
 
         for i, img in enumerate(images):
             img.save("GUI/a4_half/{}.png".format(i), 'PNG')
-        self.update_pdf_viewer(self.pdf_viewer.page_view)
+
+        if os.path.exists("GUI/a4_half/{}.png".format(self.pdf_viewer.page_view)):
+            self.pdf_viewer.changePixmap("GUI/a4_half/{}.png".format(self.pdf_viewer.page_view))
+        #self.update_pdf_viewer(self.pdf_viewer.page_view)
 
     def newViewGenerationThread(self):
         thread = threading.Thread(target=self.generateNewView)

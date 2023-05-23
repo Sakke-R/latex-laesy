@@ -1,5 +1,4 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-
     
 class PdfViewer(QtWidgets.QLabel):
     def __init__(self, parent, img, dual=True):
@@ -55,6 +54,14 @@ class SearchBar(QtWidgets.QLineEdit):
     def onEnter(self):
         QtCore.QTimer.singleShot(0, self.clear)
 
+    def updateCompleter(self):
+        completer = QtWidgets.QCompleter(self.bookletizer.getAllTitles(), self.gui)
+        completer.setCaseSensitivity(0)
+        completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
+        self.setCompleter(completer)
+        self.completer().activated.connect(self.onEnter)
+
+
     def keyPressEvent(self, a0: QtGui.QKeyEvent) -> None:
         if a0.key() == QtCore.Qt.Key.Key_Return:
             if(self.bookletizer.isMatch(self.displayText())):
@@ -77,44 +84,49 @@ class SongSelection(QtWidgets.QListWidget):
         self.gui = parent
 
     def keyPressEvent(self, e: QtGui.QKeyEvent) -> None:
+        
         row = self.currentRow()
         key = e.key()
         if key == QtCore.Qt.Key.Key_Return:
             self.addPageBreak()
-        else:
+        elif key == QtCore.Qt.Key.Key_Delete:
             item = self.takeItem(row)
-            if key == [QtCore.Qt.Key.Key_Delete]:
-                pass
-            elif key == QtCore.Qt.Key.Key_Up:
-                self.insertItem(row - 1, item)
-            elif key == QtCore.Qt.Key.Key_Down:
-                self.insertItem(row + 1, item)
-            elif key == QtCore.Qt.Key.Key_Plus:
-                if item.getType() == "image":
-                    self.insertItem(row, item.addScale(0.05))
-                else:
-                    self.insertItem(row, item)
-                    self.addVspace(0.15)
-            elif key == QtCore.Qt.Key.Key_Minus:
-                if item.getType() == "image":
-                    self.insertItem(row, item.addScale(-0.05))
-                else:
-                    self.insertItem(row, item)
-                    self.addVspace(-0.15)
-            elif key == QtCore.Qt.Key.Key_Right:
-                if item.getType() == "image":
-                    self.insertItem(row, item.addOffset(0.15))
-                    self.setCurrentRow(row)
-                    return None
-                else:
-                    self.insertItem(row, item)
-            elif key == QtCore.Qt.Key.Key_Left:
-                if item.getType() == "image":
-                    self.insertItem(row, item.addOffset(-0.15))
-                    self.setCurrentRow(row)
-                    return None
-                else:
-                    self.insertItem(row, item)
+        elif key == QtCore.Qt.Key.Key_Up:
+            item = self.takeItem(row)
+            self.insertItem(row - 1, item)
+        elif key == QtCore.Qt.Key.Key_Down:
+            item = self.takeItem(row)
+            self.insertItem(row + 1, item)
+        elif key == QtCore.Qt.Key.Key_Plus:
+            item = self.takeItem(row)
+            if item.getType() == "image":
+                self.insertItem(row, item.addScale(0.05))
+            else:
+                self.insertItem(row, item)
+                self.addVspace(0.15)
+        elif key == QtCore.Qt.Key.Key_Minus:
+            item = self.takeItem(row)
+            if item.getType() == "image":
+                self.insertItem(row, item.addScale(-0.05))
+            else:
+                self.insertItem(row, item)
+                self.addVspace(-0.15)
+        elif key == QtCore.Qt.Key.Key_Right:
+            item = self.takeItem(row)
+            if item.getType() == "image":
+                self.insertItem(row, item.addOffset(0.15))
+                self.setCurrentRow(row)
+                return None
+            else:
+                self.insertItem(row, item)
+        elif key == QtCore.Qt.Key.Key_Left:
+            item = self.takeItem(row)
+            if item.getType() == "image":
+                self.insertItem(row, item.addOffset(-0.15))
+                self.setCurrentRow(row)
+                return None
+            else:
+                self.insertItem(row, item)
 
 
         self.setCurrentRow(row)
